@@ -7,11 +7,10 @@ import android.telephony.SmsManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.media3.common.util.Log
+import android.util.Log
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,25 +19,20 @@ class MainActivity : AppCompatActivity() {
 
         scheduleSms(this, "41991335793", "mensagem enviada por background")
 
+        val botao: Button = findViewById(R.id.send)
+        val mensagem: EditText = findViewById(R.id.mensagem)
+        val num: EditText = findViewById(R.id.telefone)
 
-        val botao : Button = findViewById<Button>(R.id.send)
-        val mensagem : EditText = findViewById<EditText>(R.id.mensagem)
-        val num : EditText = findViewById<EditText>(R.id.telefone)
+        val smsmanager: SmsManager? = this.getSystemService(SmsManager::class.java)
 
-        val smsmanager: SmsManager? =  this.getSystemService<SmsManager>(SmsManager::class.java)
-
-        botao.setOnClickListener{
+        botao.setOnClickListener {
             val texto = mensagem.text.toString()
             Toast.makeText(this.baseContext, "Prestes a Enviar", Toast.LENGTH_LONG).show()
 
             smsmanager?.sendTextMessage(num.text.toString(), null, texto, null, null)
 
             Toast.makeText(this.baseContext, "Mensagem Enviada", Toast.LENGTH_LONG).show()
-
-
         }
-
-
     }
 
     private fun scheduleSms(context: Context, telefone: String, mensagem: String) {
